@@ -1,35 +1,33 @@
 package com.example.composecounter
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Button
-import androidx.compose.material.Colors
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.contentColorFor
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-
-
+import com.example.composecounter.main.AppViewModel
+import com.example.composecounter.main.MainView
+import com.example.composecounter.theme.AppTheme
+import dev.icerock.moko.mvvm.compose.getViewModel
+import dev.icerock.moko.mvvm.compose.viewModelFactory
 
 @Composable
-fun App(){
+fun App(
+    darkTheme: Boolean,
+    dynamicColor: Boolean
+) {
+    AppTheme(darkTheme, dynamicColor){
 
-    // Here  you write code
+        // Creating instance of viewModel
+        val viewModel = getViewModel(
+            key = "main-screen",
+            factory = viewModelFactory {
+                AppViewModel()
+            }
+        )
 
-    var count by remember {
-        mutableStateOf(0)
-    }
-    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
-        Button(onClick = {count++}){
-            Text("Count: $count")
+        Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background){
+            MainView(state = viewModel)
         }
     }
-
 }

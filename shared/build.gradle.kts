@@ -11,8 +11,15 @@ kotlin {
     android {
         compilations.all {
             kotlinOptions {
-                jvmTarget = "1.8"
+                jvmTarget = "17"
             }
+        }
+    }
+
+    //idk what it is but it fix error with java version
+    targets.withType(org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget::class.java).all {
+        binaries.withType(org.jetbrains.kotlin.gradle.plugin.mpp.Framework::class.java).all {
+            export("dev.icerock.moko:mvvm-core:0.16.1")
         }
     }
     
@@ -32,9 +39,14 @@ kotlin {
             dependencies {
                 implementation(compose.runtime)
                 implementation(compose.foundation)
-                implementation(compose.material)
+                implementation(compose.material3)
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
+
+                implementation("dev.icerock.moko:mvvm-core:0.16.1")
+                implementation("dev.icerock.moko:mvvm-compose:0.16.1")
+                implementation("dev.icerock.moko:mvvm-flow:0.16.1")
+                implementation("dev.icerock.moko:mvvm-flow-compose:0.16.1")
             }
         }
         val commonTest by getting {
@@ -51,4 +63,15 @@ android {
     defaultConfig {
         minSdk = 26
     }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+}
+dependencies {
+    implementation("androidx.core:core:1.10.1")
+    commonMainApi("dev.icerock.moko:mvvm-core:0.16.1")
+    commonMainApi("dev.icerock.moko:mvvm-compose:0.16.1")
+    commonMainApi("dev.icerock.moko:mvvm-flow:0.16.1")
+    commonMainApi("dev.icerock.moko:mvvm-flow-compose:0.16.1")
 }
